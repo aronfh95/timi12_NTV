@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="is">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Æfingar - Byrjendur</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      button {
+        margin-top: 10px;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      input {
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM Æfingar – Byrjendur</h1>
+
+    <section id="ex1">
+      <h2>Æfing 1 – Finna element</h2>
+      <h3 id="title">Velkomin!</h3>
+      <p class="intro">Þetta er texti.</p>
+      <button id="ex2-run">Breyta texta</button>
+
+      <script>
+        //    Setja kóða hér
+        document.getElementById("ex2-run").addEventListener("click", () => {
+          const title = document.getElementById("title");
+          title.textContent = "Hæ Dom";
+          title.style.color = "green";
+
+          const text = document.querySelector(".intro");
+          text.style.color = "blue";
+        });
+      </script>
+    </section>
+
+    <section id="ex2">
+      <h2>Æfing 2 – Breyta DOM</h2>
+      <ul id="list">
+        <li>Eitt</li>
+        <li>Tveir</li>
+      </ul>
+      <button id="prepend">Bæta fremst</button>
+      <button id="append">Bæta aftast</button>
+      <button id="reverse">Snúa við</button>
+      <script>
+        //    Setja kóða hér
+        const list = document.getElementById("list");
+        let counter = 3;
+
+        //    Bæta við click á "bæta fremst" takka
+        document.getElementById("prepend").addEventListener("click", () => {
+          const li = document.createElement("li");
+          li.textContent = `Nýr liður ${counter++}`;
+
+          list.prepend(li);
+        });
+
+        //    bæta við click á "Bæta  aftast" takka
+        document.getElementById("append").addEventListener("click", () => {
+          const li = document.createElement("li");
+          li.textContent = `Nýr liður ${counter++}`;
+
+          list.appendChild(li);
+        });
+
+        //    Bæta við click á "Snúa við" takka
+        document.getElementById("reverse").addEventListener("click", () => {
+          const items = Array.from(list.children);
+          items.reverse().forEach((el) => list.appendChild(el));
+        });
+      </script>
+    </section>
+
+    <section id="ex3">
+      <h2>Æfing 3 – DOM Events</h2>
+      <button id="clickBtn" onclick="checkStatus()">Smelltu á mig</button>
+      <p id="status"></p>
+      <script>
+        //    Setja kóða hér
+        function checkStatus(event) {
+          const status = document.getElementById("status");
+          status.textContent = "það var smellt á takkann!";
+          status.style.color = "red";
+        }
+      </script>
+    </section>
+
+    <section id="ex4">
+      <h2>Æfing 4 – Litaskiptari</h2>
+      <button id="color" onclick="changeColor(event)">Breyta lit</button>
+      <script>
+        //    Setja kóða hér
+        function changeColor(e) {
+          const red = Math.floor(Math.random() * 360);
+          const green = Math.floor(Math.random() * 360);
+          const blue = Math.floor(Math.random() * 360);
+          document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        }
+      </script>
+    </section>
+
+    <section id="ex5">
+      <h2>Æfing 5 – To-Do listi</h2>
+      <input id="task" placeholder="Nýtt verkefni" />
+      <button id="addTask">Bæta við</button>
+      <ul id="todo"></ul>
+      <script>
+        //    Setja kóða hér
+        const addTask = document.getElementById("addTask");
+        addTask.addEventListener("click", () => {
+          const input = document.getElementById("task");
+          const list = document.getElementById("todo");
+          if (!input.value.trim()) return;
+          const li = document.createElement("li");
+          li.textContent = input.value;
+          list.appendChild(li);
+          input.value = "";
+        });
+      </script>
+    </section>
+
+    <section id="ex6">
+      <h2>Æfing 6 – Teljari (+/−/reset)</h2>
+      <p>Gildi: <span id="ex6-val">0</span></p>
+      <button id="ex6-dec" onclick="decreaseValue()">−</button>
+      <button id="ex6-inc" onclick="increaseValue()">+</button>
+      <button id="ex6-reset" onclick="reset()">Endurstilla</button>
+      <script>
+        //    Setja kóða hér
+        let number = document.getElementById("ex6-val");
+        function decreaseValue() {
+          number.textContent = Number(number.textContent) - 1;
+        }
+
+        function increaseValue() {
+          number.textContent = Number(number.textContent) + 1;
+        }
+
+        function reset() {
+          number.textContent = 0;
+        }
+      </script>
+    </section>
+
+    <section id="ex7">
+      <h2>Æfing 7 – Leita í lista</h2>
+      <input id="ex7-search" placeholder="Leita..." oninput="search(event)" />
+      <ul id="ex7-list">
+        <li>Anna</li>
+        <li>Birna</li>
+        <li>Jón</li>
+        <li>Kári</li>
+        <li>Sara</li>
+      </ul>
+      <script>
+        //    Setja kóða hér
+        const items = Array.from(document.querySelectorAll("#ex7-list li"));
+        function search(e) {
+          const value = e.srcElement.value;
+          items.forEach((li) => {
+            const match = li.textContent.toLowerCase().includes(value);
+            li.style.display = match ? "list-item" : "none";
+          });
+        }
+      </script>
+    </section>
+
+    <section id="ex8">
+      <h2>Æfing 8 – Þemuskiptir (ljóst/dökkt)</h2>
+      <button id="ex8-theme" onclick="changeTheme()">Skipta um þema</button>
+      <script>
+        //    Setja kóða hér
+        let dark = false;
+        function changeTheme() {
+          dark = !dark;
+          if (dark) {
+            document.body.style.backgroundColor = "#111827";
+            document.body.style.color = "#f9fafb";
+          } else {
+            document.body.style.backgroundColor = "";
+            document.body.style.color = "";
+          }
+        }
+      </script>
+    </section>
+  </body>
+</html>
